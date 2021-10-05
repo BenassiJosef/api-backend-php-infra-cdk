@@ -21,23 +21,36 @@ class AppStage extends cdk.Stage {
       clusterName:props.clusterName
     })
 
-    this.fI = stageFargateInstance.fargateInstance
+    this.fI = {
+      cluster:stageFargateInstance.fargateInstance.service.cluster,
+      serviceArn:stageFargateInstance.fargateInstance.service.serviceArn,
+      serviceName: stageFargateInstance.fargateInstance.service.serviceName,
+      stack: stageFargateInstance.fargateInstance.service.stack,
+      env:stageFargateInstance.fargateInstance.service.env,
+      node:stageFargateInstance.fargateInstance.service.node
+    }
+    new ApplicationPipeline(app,"Application-Pipeline-Test",{
+        env: { account: '511089130325', region: 'eu-west-1' },
+        stageFargateService: stageFargateInstance.fargateInstance.service
+      })
   }
+  
 }
 
-interface ApplicationPipelineProps extends cdk.StackProps {
-  stageFargateService?: ecs.IBaseService
-}
-class ApplicationPipelineStage extends cdk.Stage {
+// interface ApplicationPipelineProps extends cdk.StackProps {
+//   stageFargateService: ecs.IBaseService
+// }
+// class ApplicationPipelineStage extends cdk.Stage {
 
-  constructor(scope: cdk.Construct, id: string, props?: ApplicationPipelineProps ) {
-    super(scope, id, props);
+//   constructor(scope: cdk.Construct, id: string, props: ApplicationPipelineProps ) {
+//     super(scope, id, props);
 
-    new ApplicationPipeline(this,"AppPipeline",{
-      env: { account: '511089130325', region: 'eu-west-1' },
-    })
-  }
-}
+//     new ApplicationPipeline(this,"AppPipeline",{
+//       env: { account: '511089130325', region: 'eu-west-1' },
+//       stageFargateService:props.stageFargateService
+//     })
+//   }
+// }
 
 
 class CdkPipeline extends cdk.Stack {
@@ -69,10 +82,11 @@ class CdkPipeline extends cdk.Stack {
       serviceName: "Stage-Fargate",
       clusterName:"stage-cluster-stampedeExample"
     })
-    
     phpCdkPipeline.addStage(infraFargateStage)
 
-    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test"))
+    // phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
+    //   stageFargateService: infraFargateStage.fI
+    // }))
 
   }
 }
