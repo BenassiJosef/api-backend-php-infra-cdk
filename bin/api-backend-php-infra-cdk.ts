@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
+import * as ecs from "@aws-cdk/aws-ecs"
 import { ApplicationPipeline } from '../lib/application-pipeline';
 import {EcsFargateService} from "../lib/ecs-fargate-service"
 import { CodePipeline, CodePipelineSource, ShellStep } from '@aws-cdk/pipelines';
@@ -20,6 +20,7 @@ class AppStage extends cdk.Stage {
     const stageFargateInstance = new EcsFargateService(this, props.serviceName,{
       clusterName:props.clusterName
     })
+
     this.fI = {
       cluster:stageFargateInstance.fargateInstance.service.cluster,
       serviceArn:stageFargateInstance.fargateInstance.service.serviceArn,
@@ -31,19 +32,24 @@ class AppStage extends cdk.Stage {
   }
 }
 
-const stageFargateInstance = new AppStage(app,'AppStage-Stage-Fargate',{
-  env:{account:'069793231881' ,region:'eu-west-1'},
-  serviceName: "Stage-Fargate",
-  clusterName:"stage-cluster-stampedeExample"
-})
+interface ApplicationPipelineProps extends cdk.StackProps {
+  stageFargateService: ecs.IBaseService
+}
+class ApplicationPipelineStage extends cdk.Stage {
 
+  constructor(scope: cdk.Construct, id: string, props: ApplicationPipelineProps ) {
+    super(scope, id, props);
 
-interface CdkPipelineProps extends cdk.StackProps {
-  fargateInstance:any;
+    new ApplicationPipeline(this,"AppPipeline",{
+      env: { account: '511089130325', region: 'eu-west-1' },
+      stageFargateService:props.stageFargateService
+    })
+  }
 }
 
+
 class CdkPipeline extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: CdkPipelineProps) {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     const phpCdkPipeline = new CodePipeline(this, 'PhpCdkInfraPipeline', {
       // The pipeline name
@@ -66,23 +72,21 @@ class CdkPipeline extends cdk.Stack {
        }),
     });
 
-    phpCdkPipeline.addStage(new AppStage(app,'Deploy-AppStage-Stage-Fargate',{
+    const infraFargateStage = new AppStage(app,'Deploy-AppStage-Stage-Fargate',{
       env:{account:'069793231881' ,region:'eu-west-1'},
       serviceName: "Stage-Fargate",
       clusterName:"stage-cluster-stampedeExample"
     })
-    )
+    phpCdkPipeline.addStage(infraFargateStage)
+
+    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
+      stageFargateService: infraFargateStage.fI
+    }))
 
   }
-
 }
 
 new CdkPipeline(app,"CdkPipeline",{
   env: { account: '511089130325', region: 'eu-west-1' },
-  fargateInstance:stageFargateInstance 
 })
 
-new ApplicationPipeline(app, 'PhpApplicationPipeline', {
-  env: { account: '511089130325', region: 'eu-west-1' },
-  stageFargateService:stageFargateInstance.fI
-});
