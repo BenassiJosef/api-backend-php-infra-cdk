@@ -82,7 +82,7 @@ new CdkPipeline(app,"CdkPipeline",{
   fargateInstance:stageFargateInstance 
 })
 
-// new ApplicationPipeline(app, 'PhpApplicationPipeline', {
-//   env: { account: '511089130325', region: 'eu-west-1' },
-//   stageFargateService:stageFargateInstance.fI
-// });
+new ApplicationPipeline(app, 'PhpApplicationPipeline', {
+  env: { account: '511089130325', region: 'eu-west-1' },
+  stageFargateService:stageFargateInstance.fI
+});
