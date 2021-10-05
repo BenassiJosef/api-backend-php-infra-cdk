@@ -13,27 +13,7 @@ export class ApplicationPipeline extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: ApplicationPipelineProps) {
     super(scope, id, props);
 
-    const pipeline = new codepipeline.Pipeline(this, 'AppPipelineTest', {
-      pipelineName: 'AppPipeline',
-    });
 
-    const outputSources = new codepipeline.Artifact()
-    const outputBuild = new codepipeline.Artifact()
-  
-    pipeline.addStage({
-      stageName: 'Source',
-      actions: [
-        new codepipeline_actions.GitHubSourceAction({
-          actionName: 'Checkout',
-          owner: 'BenassiJosef',
-          repo: 'api-backend-php',
-          branch:"main",
-          oauthToken: cdk.SecretValue.secretsManager('github-token'),
-          output: outputSources ,
-          trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,
-        }),
-      ],
-    })
 
     // New Ecr Repo 
     const ecrRepo  = new ecr.Repository(this, 'Php-Test-Ecr-Repo');
@@ -64,7 +44,33 @@ export class ApplicationPipeline extends cdk.Stack {
 
     ecrCodeBuildRole.addToPrincipalPolicy(executionRolePolicy);
 
-    //Build 
+    // pipeline
+
+    const pipeline = new codepipeline.Pipeline(this, 'AppPipelineTest', {
+      pipelineName: 'AppPipeline',
+      restartExecutionOnUpdate: true
+    });
+
+    const outputSources = new codepipeline.Artifact()
+    const outputBuild = new codepipeline.Artifact()
+  
+    // Get source to trigger pipeline
+    pipeline.addStage({
+      stageName: 'Source',
+      actions: [
+        new codepipeline_actions.GitHubSourceAction({
+          actionName: 'Checkout',
+          owner: 'BenassiJosef',
+          repo: 'api-backend-php',
+          branch:"main",
+          oauthToken: cdk.SecretValue.secretsManager('github-token'),
+          output: outputSources ,
+          trigger: codepipeline_actions.GitHubTrigger.WEBHOOK,
+        }),
+      ],
+    })
+
+    //Build Docker File to obtain container image for fargate serve. store in outputbuild.
     pipeline.addStage({
       stageName: 'Build',
       actions: [
@@ -127,7 +133,17 @@ export class ApplicationPipeline extends cdk.Stack {
         }),
       ],
     })
-
+    pipeline.addStage({
+      stageName: 'Deploy',
+      actions: [
+        // AWS CodePipeline action to deploy node app to ecs fargate
+        new codepipeline_actions.EcsDeployAction({
+          actionName: 'DeployAction',
+          service: props.stageFargateService,
+          imageFile: new codepipeline.ArtifactPath(outputBuild , `imagedefinitions.json`)
+        })
+      ],
+    })    
   
   }
 }
