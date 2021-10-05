@@ -7,13 +7,11 @@ import * as ecr from "@aws-cdk/aws-ecr"
 import * as cdk from '@aws-cdk/core';
 
 interface ApplicationPipelineProps extends cdk.StackProps {
-  stageFargateService: ecs.IBaseService
+  stageFargateService?: ecs.IBaseService
 }
 export class ApplicationPipeline extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: ApplicationPipelineProps) {
+  constructor(scope: cdk.Construct, id: string, props?: ApplicationPipelineProps) {
     super(scope, id, props);
-
-
 
     // New Ecr Repo 
     const ecrRepo  = new ecr.Repository(this, 'Php-Test-Ecr-Repo');
@@ -139,7 +137,7 @@ export class ApplicationPipeline extends cdk.Stack {
         // AWS CodePipeline action to deploy node app to ecs fargate
         new codepipeline_actions.EcsDeployAction({
           actionName: 'DeployAction',
-          service: props.stageFargateService,
+          service: <"Fargate Instance would go here passed as props">,
           imageFile: new codepipeline.ArtifactPath(outputBuild , `imagedefinitions.json`)
         })
       ],

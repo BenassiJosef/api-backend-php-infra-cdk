@@ -21,28 +21,20 @@ class AppStage extends cdk.Stage {
       clusterName:props.clusterName
     })
 
-    this.fI = {
-      cluster:stageFargateInstance.fargateInstance.service.cluster,
-      serviceArn:stageFargateInstance.fargateInstance.service.serviceArn,
-      serviceName: stageFargateInstance.fargateInstance.service.serviceName,
-      stack: stageFargateInstance.fargateInstance.service.stack,
-      env:stageFargateInstance.fargateInstance.service.env,
-      node:stageFargateInstance.fargateInstance.service.node
-    }
+    this.fI = stageFargateInstance.fargateInstance
   }
 }
 
 interface ApplicationPipelineProps extends cdk.StackProps {
-  stageFargateService: ecs.IBaseService
+  stageFargateService?: ecs.IBaseService
 }
 class ApplicationPipelineStage extends cdk.Stage {
 
-  constructor(scope: cdk.Construct, id: string, props: ApplicationPipelineProps ) {
+  constructor(scope: cdk.Construct, id: string, props?: ApplicationPipelineProps ) {
     super(scope, id, props);
 
     new ApplicationPipeline(this,"AppPipeline",{
       env: { account: '511089130325', region: 'eu-west-1' },
-      stageFargateService:props.stageFargateService
     })
   }
 }
@@ -77,11 +69,10 @@ class CdkPipeline extends cdk.Stack {
       serviceName: "Stage-Fargate",
       clusterName:"stage-cluster-stampedeExample"
     })
+    
     phpCdkPipeline.addStage(infraFargateStage)
 
-    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
-      stageFargateService: infraFargateStage.fI
-    }))
+    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test"))
 
   }
 }

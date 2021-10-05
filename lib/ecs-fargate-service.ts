@@ -22,6 +22,7 @@ export class EcsFargateService extends cdk.Stack {
         cluster,
         taskImageOptions: {image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample")}
       });
+      // this.exportValue(this.fargateInstance.service.serviceArn);
     }
   }
     
