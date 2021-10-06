@@ -75,9 +75,9 @@ class CdkPipeline extends cdk.Stack {
    
     // console.log("ibaseserviceinstance: ", infraFargateStage.iBaseServiceInstance)
     
-    // phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
-    //   stageFargateService: infraFargateStage.iBaseServiceInstance
-    // }))
+    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
+      stageFargateService: infraFargateStage.iBaseServiceInstance
+    }))
   }
 } 
 
