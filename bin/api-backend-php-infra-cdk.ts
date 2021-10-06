@@ -1,8 +1,6 @@
 #!/usr/bin/env node
-import { ApplicationPipeline} from '../lib/application-pipeline';
 import {EcsFargateService} from "../lib/ecs-fargate-service"
 import * as cdk from '@aws-cdk/core';
-import ecs = require('@aws-cdk/aws-ecs')
 import { CodePipeline, CodePipelineSource, ShellStep } from '@aws-cdk/pipelines';
 const app = new cdk.App();
 interface AppStageProps extends cdk.StackProps {
@@ -24,22 +22,6 @@ class AppStage extends cdk.Stage {
     }
   }
 }
-
-interface ApplicationPipelineProps extends cdk.StackProps {
-  stageFargateService: ecs.IBaseService
-}
-class ApplicationPipelineStage extends cdk.Stage {
-
-  constructor(scope: cdk.Construct, id: string, props: ApplicationPipelineProps ) {
-    super(scope, id, props);
-
-    new ApplicationPipeline(this,"AppPipeline",{
-      env: { account: '511089130325', region: 'eu-west-1' },
-      stageFargateService:props.stageFargateService
-    })
-  }
-}
-
 class CdkPipeline extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -63,8 +45,6 @@ class CdkPipeline extends cdk.Stack {
            'npx cdk synth'
          ],
        }),
-        //source 
-       // build 
     });
 
     const infraFargateStage = new AppStage(app,'Deploy-AppStage-Stage-Fargate',{
@@ -74,12 +54,6 @@ class CdkPipeline extends cdk.Stack {
     })
     
     phpCdkPipeline.addStage(infraFargateStage)
-   
-    // console.log("ibaseserviceinstance: ", infraFargateStage.iBaseServiceInstance)
-    
-    // phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
-    //   stageFargateService: infraFargateStage.iBaseServiceInstance
-    // }))
   }
 } 
 
