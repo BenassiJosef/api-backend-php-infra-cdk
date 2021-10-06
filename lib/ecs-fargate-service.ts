@@ -2,6 +2,7 @@ import { Vpc } from '@aws-cdk/aws-ec2';
 import { Cluster} from '@aws-cdk/aws-ecs';
 import { ApplicationLoadBalancedFargateService } from '@aws-cdk/aws-ecs-patterns';
 import ecs = require('@aws-cdk/aws-ecs')
+import * as ecr from "@aws-cdk/aws-ecr";
 import * as cdk from '@aws-cdk/core';
 
 interface EcsFargateServiceProps extends cdk.StackProps {
@@ -20,9 +21,18 @@ export class EcsFargateService extends cdk.Stack {
         clusterName: props.clusterName,
         vpc
       });
+      const ecrRepoName = "application-pipeline-test-apppipeline-phptestecrrepo73b958db-rq2tk4yfdllp"
+      const ecrRepo = ecr.Repository.fromRepositoryAttributes(
+        this,
+        ecrRepoName,
+        {
+          repositoryArn: `arn:aws:ecr:eu-west-1:511089130325:repository/${ecrRepoName}`,
+          repositoryName: ecrRepoName,
+        }
+      );
       this.fargateInstance = new ApplicationLoadBalancedFargateService(this, 'Service', {
         cluster,
-        taskImageOptions: {image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample")}
+        taskImageOptions: {image: ecs.ContainerImage.fromEcrRepository(ecrRepo)}
       });
 
       this.fargateServiceArn = this.fargateInstance.service.serviceArn;
