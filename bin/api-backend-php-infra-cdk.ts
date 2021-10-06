@@ -63,6 +63,8 @@ class CdkPipeline extends cdk.Stack {
            'npx cdk synth'
          ],
        }),
+        //source 
+       // build 
     });
 
     const infraFargateStage = new AppStage(app,'Deploy-AppStage-Stage-Fargate',{
@@ -75,9 +77,9 @@ class CdkPipeline extends cdk.Stack {
    
     // console.log("ibaseserviceinstance: ", infraFargateStage.iBaseServiceInstance)
     
-    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
-      stageFargateService: infraFargateStage.iBaseServiceInstance
-    }))
+    // phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
+    //   stageFargateService: infraFargateStage.iBaseServiceInstance
+    // }))
   }
 } 
 
