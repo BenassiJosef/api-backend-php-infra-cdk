@@ -43,6 +43,7 @@ class ApplicationPipelineStage extends cdk.Stage {
 class CdkPipeline extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+    
     const phpCdkPipeline = new CodePipeline(this, 'PhpCdkInfraPipeline', {
       // The pipeline name
       pipelineName: 'MyServicePipeline',
@@ -69,13 +70,14 @@ class CdkPipeline extends cdk.Stack {
       serviceName: "Stage-Fargate",
       clusterName:"stage-cluster-stampedeExample"
     })
+    
     phpCdkPipeline.addStage(infraFargateStage)
    
-    console.log("ibaseserviceinstance: ", infraFargateStage.iBaseServiceInstance)
+    // console.log("ibaseserviceinstance: ", infraFargateStage.iBaseServiceInstance)
     
-    phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
-      stageFargateService: infraFargateStage.iBaseServiceInstance
-    }))
+    // phpCdkPipeline.addStage(new ApplicationPipelineStage(app,"Application-Pipeline-Test",{
+    //   stageFargateService: infraFargateStage.iBaseServiceInstance
+    // }))
   }
 } 
 
