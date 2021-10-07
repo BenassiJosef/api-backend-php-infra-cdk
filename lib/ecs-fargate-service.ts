@@ -30,7 +30,8 @@ export class EcsFargateService extends cdk.Stack {
 
       this.fargateInstance = new ApplicationLoadBalancedFargateService(this, 'Service', {
         cluster,
-        taskImageOptions: {image: ecs.EcrImage.fromDockerImageAsset(assest) }
+        taskImageOptions: {image: ecs.EcrImage.fromDockerImageAsset(assest) },
+        desiredCount:3
       });
 
       this.fargateServiceArn = this.fargateInstance.service.serviceArn;
