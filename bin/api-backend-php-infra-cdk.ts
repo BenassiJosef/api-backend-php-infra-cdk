@@ -48,7 +48,7 @@ class CdkPipeline extends cdk.Stack {
        }),
        assetPublishingCodeBuildDefaults : new pipelines.CodeBuildStep("Run Tests",{
          commands:[
-          'would run test here...'
+          'echo Tests would run here.....!!!!'
          ],
        })
     });
