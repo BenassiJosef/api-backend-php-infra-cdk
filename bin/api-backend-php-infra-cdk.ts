@@ -2,6 +2,7 @@
 import {EcsFargateService} from "../lib/ecs-fargate-service"
 import * as cdk from '@aws-cdk/core';
 import { CodePipeline, CodePipelineSource, ShellStep } from '@aws-cdk/pipelines';
+import * as pipelines from '@aws-cdk/pipelines';
 const app = new cdk.App();
 interface AppStageProps extends cdk.StackProps {
   serviceName:string,
@@ -45,6 +46,11 @@ class CdkPipeline extends cdk.Stack {
            'npx cdk synth'
          ],
        }),
+       assetPublishingCodeBuildDefaults : new pipelines.CodeBuildStep("Run Tests",{
+         commands:[
+          'would run test here...'
+         ],
+       })
     });
 
     const infraFargateStage = new AppStage(app,'Deploy-AppStage-Stage-Fargate',{
