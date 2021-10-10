@@ -22,6 +22,7 @@ export class EcsFargateService extends cdk.Stack {
       const cluster = new Cluster(this, 'Cluster', {
         clusterName: props.clusterName,
         vpc
+        
       });
 
       const assest = new DockerImageAsset(this,'phpApp',{
