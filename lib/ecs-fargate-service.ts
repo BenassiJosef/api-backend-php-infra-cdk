@@ -4,6 +4,7 @@ import { ApplicationLoadBalancedFargateService } from '@aws-cdk/aws-ecs-patterns
 import ecs = require('@aws-cdk/aws-ecs')
 import * as ecr from "@aws-cdk/aws-ecr";
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+import  *  as asassetsecr from '@aws-cdk/aws-ecr-assets';
 import * as cdk from '@aws-cdk/core';
 import * as path from "path"
 
@@ -18,16 +19,20 @@ export class EcsFargateService extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: EcsFargateServiceProps) {
       super(scope, id, props);
 
-      const vpc = new Vpc(this, 'VPC', { maxAzs: 2 });
+      const vpc = new Vpc(this, 'VPC', { 
+        maxAzs: 2 
+      });
       const cluster = new Cluster(this, 'Cluster', {
         clusterName: props.clusterName,
         vpc
-        
+
       });
 
       const assest = new DockerImageAsset(this,'phpApp',{
         directory: path.join(__dirname,"..","src")
       })
+
+      asassetsecr.TarballImageAsset
 
       this.fargateInstance = new ApplicationLoadBalancedFargateService(this, 'Service', {
         cluster,
