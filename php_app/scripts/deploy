@@ -1,0 +1,67 @@
+#!/bin/sh
+set -e
+
+if [ ! $(command -v aws) ]; then
+    echo "aws cli must be installed"
+    exit 1
+fi
+
+if [ ! $(command -v jq) ]; then
+    echo "jq must be installed"
+    exit 1
+fi
+
+deploymentFileName=${1}
+tag=${2}
+deploymentFile=$(cat "$deploymentFileName")
+
+service=$(echo "$deploymentFile" | jq --raw-output '.service')
+cluster=$(echo "$deploymentFile" | jq --raw-output '.cluster')
+family=$(echo "$deploymentFile" | jq --raw-output '.family')
+container=$(echo "$deploymentFile" | jq --raw-output '.container')
+repository=$(echo "$deploymentFile" | jq --raw-output '.repository')
+region=$(echo "$deploymentFile" | jq --raw-output '.region')
+account=$(echo "$deploymentFile" | jq --raw-output '.account')
+image="$account.dkr.ecr.$region.amazonaws.com/$repository:$tag"
+
+task_definition_input=$(aws ecs describe-task-definition --task-definition=$family \
+                        | jq \
+                            --arg container "$container" \
+                            --arg image "$image" \
+                                 '(.taskDefinition.containerDefinitions[] | select(.name==$container) | .image ) |= $image | .taskDefinition')
+
+
+task_role_arn=$(echo "$task_definition_input" | jq --raw-output ".taskRoleArn")
+execution_role_arn=$(echo "$task_definition_input" | jq --raw-output ".executionRoleArn")
+network_mode=$(echo "$task_definition_input" | jq --raw-output ".networkMode")
+container_definitions=$(echo "$task_definition_input" | jq '.containerDefinitions')
+volumes=$(echo "$task_definition_input" | jq '.volumes')
+placement_constraints=$(echo "$task_definition_input" | jq '.placementConstraints')
+requires_compatibilities=$(echo "$task_definition_input" | jq '.requiresCompatibilities')
+cpu=$(echo "$task_definition_input" | jq --raw-output '.cpu')
+memory=$(echo "$task_definition_input" | jq --raw-output '.memory')
+
+
+task_definition=$(aws ecs register-task-definition \
+                    --family="$family"\
+                    --task-role-arn="$task_role_arn"\
+                    --execution-role-arn="$execution_role_arn"\
+                    --network-mode="$network_mode"\
+                    --container-definitions="$container_definitions"\
+                    --volumes="$volumes"\
+                    --placement-constraints="$placement_constraints"\
+                    --requires-compatibilities="$requires_compatibilities"\
+                    --cpu="$cpu"\
+                    --memory="$memory")
+
+revision=$(echo "$task_definition" | jq '.taskDefinition.revision')
+
+deployed_service=$(aws ecs update-service --cluster="$cluster" --service="$service" --task-definition="$family:$revision")
+service_arn=$(echo "$deployed_service" | jq --raw-output '.service.serviceArn')
+
+echo "Started deploying ($service_arn) as version ($family:$revision)"
+
+aws ecs wait services-stable --cluster "$cluster" --services "$service"
+
+echo "Service ($service_arn) was deployed with ($family:$revision)"
+

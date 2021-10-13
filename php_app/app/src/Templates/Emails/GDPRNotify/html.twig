@@ -1,0 +1,60 @@
+{% extends 'Emails/newBase.twig' %}
+{% block content %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns 2Rows">
+        <tr>
+            <td width="100%">
+                <table bgcolor="#FFFFFF" align="center" border="0" cellspacing="0" cellpadding="0"
+                       width="560">
+                              
+
+                                <tr>
+                                    <td class="fs-38 black xbold">
+                                        GDPR Opt-Out
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td height="35"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fs-18 text-lighter">
+                                        Someone has just opted out of your location, please remove them from any 3rd party lists.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td height="30"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fs-18 text-lighter">Email:</td>
+                               
+                                </tr>
+<tr>
+     <td class="fs-18 text-lighter bold">{{ email }}</td>
+</tr>
+
+                                <tr>
+                                    <td height="30"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a class="bx-button clear-link"
+                                           href="{{ branding.domain }}{{ id }}/user_overview">
+                                            View Profile
+                                        </a>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td height="40"></td>
+                                </tr>
+                      
+                </table>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

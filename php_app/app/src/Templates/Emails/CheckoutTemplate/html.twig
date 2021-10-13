@@ -1,0 +1,72 @@
+{% extends 'Emails/newBase.twig' %}
+{% block content %}
+
+	<table bgcolor="#FFFFFF" align="center" border="0" cellspacing="0" cellpadding="0" width="560">
+
+		<tr>
+			<td class="fs-12 text-lighter text-uppercase">Thanks for visiting
+				{{ alias }}</td>
+		</tr>
+
+		<tr>
+			<td height="15"></td>
+		</tr>
+
+		<tr>
+			<td class="fs-32 xbold black">
+				Checkout when you leave
+			</td>
+		</tr>
+		<tr>
+			<td height="35"></td>
+		</tr>
+
+		<tr>
+			<td class="fs-18 text-lighter">Hey,<br>
+				<p>Thank you for checking-in at
+					{{alias}}, we hope you enjoyed your visit today.</p>
+				<p>At
+					{{alias}}
+					we’re making every effort to keep all customers safe, but we need your help to do it!</p>
+				<p>When you’re ready to leave
+					{{alias}}
+					click 'I’ve Left' to let us know you’ve departed.</p>
+			</td>
+
+		</tr>
+
+		<tr>
+			<td height="20"></td>
+		</tr>
+		<tr>
+			<td>
+				<a class="bx-button clear-link" href={{link}}>I’ve Left</a>
+			</td>
+		</tr>
+		<tr>
+			<td height="35"></td>
+		</tr>
+
+		<tr>
+			<td class="fs-18 text-lighter">
+				Why are we doing this?
+			</td>
+		</tr>
+		<tr>
+			<td height="20"></td>
+		</tr>
+		<tr>
+			<td class="fs-18 text-lighter">
+				<p>To assist the NHS with any contact tracing efforts it helps to know when people arrive and when they leave.</p>
+				<p>
+					Simply by clicking the link above you’ll be doing your part to help out.</p>
+				<p>Thank you so much for your visit and support.</p>
+
+				{{alias}}
+				Management Team
+			</td>
+
+		</tr>
+	</table>
+
+{% endblock %}

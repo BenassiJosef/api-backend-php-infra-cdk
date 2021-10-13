@@ -1,0 +1,52 @@
+{% extends 'Emails/newBase.twig' %}
+{% block content %}
+    <<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns 2Rows">
+    <tr>
+        <td>
+            <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" class="scale b-t-r"
+                   bgcolor="white">
+                <tr>
+                    <td width="100%">
+                        <table bgcolor="#FFFFFF" align="center" border="0" cellspacing="0" cellpadding="0"
+                               width="560">
+                            <tr>
+                                <td height="15"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="fs-32 text-light">
+                                    Stage 1 Complete
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="35"></td>
+                            </tr>
+                            <tr>
+                                <td class="fs-18 text-lighter">In order to complete the setup process, click the link below and enter the information.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td height="20"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a class="bx-button clear-link"
+                                       href="{{ link }}">Complete Setup</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td height="40"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+{% endblock %}

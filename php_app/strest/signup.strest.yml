@@ -1,0 +1,141 @@
+version: 2
+
+requests:
+  createAccount:
+    request:
+      url: <$ Env("STREST_API_HOST") $>/public/create-account
+      method: POST
+      postData:
+        mimeType: application/json
+        text:
+          first:
+          phone: <$ Faker("phone.phoneNumber") $>
+          uid:
+          last:
+          gclid:
+          company:
+          password: <$ Env("STREST_ACCOUNT_PASSWORD") $>
+          isLocal: false
+          vendor:
+          website:  <$ Faker("internet.url") $>
+          email: <$ Faker("internet.email") $>
+          hasWifi: true
+          reseller: fc34eaf5-4a01-4c29-be45-0d112847a21c
+    validate:
+      - jsonpath: status
+        expect: 200
+      - jsonpath: content
+        jsonschema:
+          properties:
+            status:
+              type: number
+            message:
+              type: object
+              properties:
+                uid:
+                  type: string
+                reseller:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                inChargeBee:
+                  type: number
+                role:
+                  type: number
+
+  oauthPasswordGrant:
+    request:
+      url: <$ Env("STREST_API_HOST") $>/oauth/token
+      method: POST
+      postData:
+        mimeType: application/json
+        text:
+          client_id: <$ Env("STREST_CLIENT_ID") $>
+          username: <$ createAccount.content.message.email $>
+          password: <$ Env("STREST_ACCOUNT_PASSWORD") $>
+          client_secret: <$ Env("STREST_CLIENT_SECRET") $>
+          grant_type: password
+    validate:
+      - jsonpath: status
+        expect: 200
+
+  createSubscription:
+    request:
+      url:  <$ Env("STREST_API_HOST") $>/members/me/subscriptions
+      method: POST
+      headers:
+        - name: Authorization
+          value: Bearer <$ oauthPasswordGrant.content.access_token $>
+      postData:
+        mimeType: application/json
+        text:
+          trial: true
+          planId: all-in
+          hosted: true
+          method:
+            name: unifi
+    validate:
+      - jsonpath: status
+        expect: 200
+
+  updateMe:
+    request:
+      url: <$ Env("STREST_API_HOST") $>/members/me
+      method: PUT
+      headers:
+        - name: Authorization
+          value: Bearer <$ oauthPasswordGrant.content.access_token $>
+      postData:
+        mimeType: application/json
+        text:
+          first: <$ Faker("name.firstName") $>
+          phone: <$ Faker("phone.phoneNumber") $>
+          uid: <$ createAccount.content.message.uid $>
+          last: <$ Faker("name.lastName") $>
+          gclid:
+          company: <$ Faker("company.companyName") $>
+          password: <$ Env("STREST_ACCOUNT_PASSWORD") $>
+          isLocal: false
+          vendor: <$ createSubscription.content.message.cf_method $>
+          website:  <$ Faker("internet.url") $>
+          hasWifi: true
+          reseller: <$ createAccount.content.message.reseller $>
+    validate:
+      - jsonpath: status
+        expect: 200
+
+  chargebeeWebhook:
+    request:
+      url: <$ Env("STREST_API_HOST") $>/webhooks/chargebee
+      method: POST
+      postData:
+        mimeType: application/json
+        text:
+          api_version: v2
+          content:
+            subscription:
+              id: <$ Faker("random.uuid") $>
+              customer_id: <$ updateMe.content.message.uid $>
+              plan_id: all-in
+              status: active
+              cf_serial: <$ createSubscription.content.message.cf_serial $>
+              cf_method: <$ createSubscription.content.message.cf_method $>
+          event_type: subscription_created
+          id: <$ Faker("random.uuid") $>
+
+  cancellationRequest:
+    request:
+      url: <$ Env("STREST_API_HOST") $>/members/me/subscriptions/cancellation-requests
+      method: POST
+      headers:
+        - name: Authorization
+          value: Bearer <$ oauthPasswordGrant.content.access_token $>
+      postData:
+        mimeType: application/json
+        text:
+          reason: "I didn't like it"
+    validate:
+      - jsonpath: status
+        expect: 204

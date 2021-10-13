@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+{{ include('Emails/newHeader.twig') }}
+
+
+<body>
+
+<table width="560" border="0" cellspacing="0" cellpadding="0" align="center" class="scale" data-module="2Columns">
+    <tr>
+        <td height="50"></td>
+    </tr>
+</table>
+
+{% block content %}{% endblock %}
+
+{{ include('Emails/newFooter.twig') }}
+
+</body>

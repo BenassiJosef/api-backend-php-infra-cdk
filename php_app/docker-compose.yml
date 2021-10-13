@@ -1,0 +1,90 @@
+version: "3.7"
+
+services:
+  aws:
+    image: pafortin/goaws
+    ports:
+      - 4100:4100
+    volumes:
+      - ./goaws.yaml:/conf/goaws.yaml
+
+  email:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+  database:
+    image: ghcr.io/blackbx/backend-db/db:latest
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - 3306:3306
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  backend:
+    image: ghcr.io/blackbx/docker-php/dev:latest
+    depends_on:
+      - redis
+      - database
+      - email
+    volumes:
+      - "./:/var/www/html"
+    ports:
+      - 8080:8080
+    environment:
+      - SERVICE_URL=service.stage.stampede.ai
+      - SERVICE_OAUTH_CLIENT_ID=stage-service
+      - SERVICE_OAUTH_CLIENT_SECRET=b0a0d0c5-fa7d-11eb-b719-022aaa4159a9
+      - API_URL=api.stage.stampede.ai
+      - OAUTH_CLIENT_SECRET=hunter2
+      - OAUTH_CLIENT_ID=client_credentials
+      - DELOREAN_BASE_URL=https://delorean.stampede.ai
+      - SEGMENT_MARKETING_SNS_ARN=arn:aws:sns:eu-west-1:354378566817:example-topic
+      - SNS_ENDPOINT=http://aws:4100
+      - CONNECT_REDIS=redis://redis:6379
+      - CHARGEBEE_ENABLED=false
+      - CANCELLATION_EMAILS=support@blackbx.io,alistair.judson@blackbx.io
+      - DISPLAY_ERRORS=true
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
+      - INFRASTRUCTURE_REDIS=redis://redis:6379
+      - MARKETING_REDIS=redis://redis:6379
+      - NEARLY_REDIS=redis://redis:6379
+      - NEW_RELIC_APP_NAME=backend-local
+      - NEW_RELIC_CONFIG_FILE=newrelic.ini
+      - NEW_RELIC_LICENSE_KEY=0000000000000000
+      - NEW_RELIC_LOG=stdout
+      - NEW_RELIC_LOG_LEVEL=info
+      - NRIA_DISPLAY_NAME=api-local
+      - SQS_ENDPOINT=http://aws:4100
+      - doctrine_connection_dbname=core
+      - doctrine_connection_host=host.docker.internal:3307
+      - doctrine_connection_password=vx9tXp}FmLmVp8vhTKCtnMRhxo4f
+      - doctrine_connection_replica_host=host.docker.internal:3307
+      - doctrine_connection_user=api
+      - doctrine_radius_dbname=radius
+      - doctrine_radius_host=database:3306
+      - doctrine_radius_password=hunter2
+      - doctrine_radius_user=blackbx74
+      - pdo_dsn=mysql:host=host.docker.internal;port=3307;dbname=core
+      - pdo_password=vx9tXp}FmLmVp8vhTKCtnMRhxo4f
+      - pdo_username=api
+      - mail_username=admin
+      - mail_password=password
+      - mail_host=email
+      - mail_port=1025
+      - mail_secure=false
+      - XDEBUG_REMOTE_ENABLE=1
+      - XDEBUG_REMOTE_AUTOSTART=On
+      - XDEBUG_REMOTE_PORT=9000
+      - XDEBUG_REMOTE_HOST=host.docker.internal
+      - XDEBUG_IDKEY=PHPSTORM
+      - PHP_IDE_CONFIG=serverName=backend-docker-compose
+      - chargebee_site_name=blackbx-test
+      - chargebee_site_key=test_N2fux6f1PocdrrYkF8yxifk080jm7IHWQ
+      - disable_proxy_generatopm=true

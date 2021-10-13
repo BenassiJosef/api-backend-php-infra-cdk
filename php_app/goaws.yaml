@@ -1,0 +1,37 @@
+Local:
+  Host: aws
+  Port: 4100
+  Region: eu-west-1
+  AccountId: "354378566817"
+  LogToFile: false
+  LogFile: .st/goaws_messages.log
+  QueueAttributeDefaults:
+    VisibilityTimeout: 30
+    ReceiveMessageWaitTimeSeconds: 0
+  Queues:
+    - Name: airship
+    - Name: campaign-monitor
+    - Name: dot-mailer
+    - Name: email-delivery
+    - Name: email-validation
+    - Name: facebook-reviews
+    - Name: file-export
+    - Name: gdpr-notifier
+    - Name: notification
+    - Name: google-reviews
+    - Name: inform
+    - Name: mail-chimp
+    - Name: opt-out
+    - Name: sms-delivery
+    - Name: text-local
+    - Name: tripadvisor-reviews
+    - Name: unifi-queue
+    - Name: unifi-sync-devices
+    - Name: zapier
+    - Name: campaign-eligibility
+    - Name: example-queue
+  Topics:
+    - Name: example-topic
+      Subscriptions:
+        - QueueName: example-queue
+          Raw: true

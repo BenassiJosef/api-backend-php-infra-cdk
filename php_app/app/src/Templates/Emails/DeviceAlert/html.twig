@@ -1,0 +1,111 @@
+{% extends 'Emails/base.twig' %}
+
+{% block content %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns">
+        <tr>
+            <td bgcolor="#F1F5F9">
+                <table width="620" border="0" cellspacing="0" cellpadding="0" align="center" class="scale">
+                    <tr>
+                        <td bgcolor="#4c443e" data-bgcolor="Banner" style="background-color: rgb(255, 255, 255);">
+                            <table width="540" border="0" cellspacing="0" cellpadding="0" align="center" class="scale">
+                                <tr>
+                                    <td height="90">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table width="245" border="0" cellspacing="0" cellpadding="0" align="left"
+                                               class="scale">
+                                            <tr>
+                                                <td class="scale-center-both-bottom">
+                                                    <img width="150"
+                                                         src="https://stampede.ai/wp-content/uploads/2015/10/Email-Alerts.png"
+                                                         style="display: block; margin: 0 auto;" border="0" class=""
+                                                         alt="">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table width="245" border="0" cellspacing="0" cellpadding="0" align="right"
+                                               style="font-family:'Avenir LT W01 35 Light', Helvetica, Arial, sans-serif; font-size: 16px; color: #c8bdb5;"
+                                               class="scale">
+                                            <tr>
+                                                <td style="font-family: 'Avenir LT W01 85 Heavy', Helvetica, Arial, sans-serif; color: rgb(27, 27, 27); font-size: 24px;"
+                                                    class="scale-center-both-top" data-color="Headlines"
+                                                    data-size="Headlines" data-max="48">
+                                                    {{ title }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="18">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="line-height: 27px; color: rgb(27, 27, 27);"
+                                                    class="scale-center-both" data-color="Paragraphs"
+                                                    data-size="Paragraphs"
+                                                    data-min="10" data-max="38">
+                                                    {{ text }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="48">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-family:'Avenir LT W01 85 Heavy', Helvetica, Arial, sans-serif;"
+                                                    class="scale-center-both">
+                                                    <a href="{{ branding.domain }}network/{{ serial }}/manage"
+                                                       style="text-decoration: none; border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; padding: 10px 32px; color: rgb(255, 255, 255); background-color: rgb(47, 195, 180); font-size: 13px;"
+                                                       data-bgcolor="Buttons" data-color="Buttons" data-size="Buttons"
+                                                       data-max="26">
+                                                        GOTO DASHBOARD</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="90">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="Banner2">
+        <tr>
+            <td bgcolor="#e7eaee">
+                <table width="620" border="0" cellspacing="0" cellpadding="0" align="center" class="scale">
+                    <tr>
+                        <td bgcolor="#ffffff" style="border-top: 1px solid #ebebeb;">
+                            <table width="540" border="0" cellspacing="0" cellpadding="0" align="center"
+                                   style="font-family:'Avenir LT W01 35 Light', Helvetica, Arial, sans-serif; font-size: 24px; color: #222222;"
+                                   class="scale">
+                                <tr>
+                                    <td height="48">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" class="scale-center-both" data-color="Banner Paragraphs"
+                                        data-size="Banner Paragraphs" data-max="48">
+                                        &nbsp; &nbsp;Last seen -&nbsp;<font
+                                                style="font-family: 'Avenir LT W01 85 Heavy', Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"
+                                                data-color="Banner P3">
+                                            {{ time }}</font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="48">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

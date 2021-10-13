@@ -1,0 +1,63 @@
+{% extends 'Emails/GiftingTemplate/giftBase.twig' %}
+{% block content %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns 2Rows">
+        <tr>
+            <td width="100%">
+                <table bgcolor="#FFFFFF" align="center" border="0" cellspacing="0" cellpadding="0"
+                       width="560">
+                    <tr>
+                        <td align="center">
+                            <img width="150px" style="display: block;" src="{{ image }}"/>
+                        </td>
+                    </tr>
+ 
+                    <tr>
+                        <td height="15"></td>
+                    </tr>
+ 
+                    <tr>
+                        <td class="fs-38 xbold" style="color: {{ colour }};" align="center">
+                            Thank you,
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="13"></td>
+                    </tr>
+                    <tr>
+                        <td class="fs-18 black" align="center">
+                            for purchasing our gift card
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="40"></td>
+                    </tr>
+
+                    <tr>
+                        <td align="center" height="342">
+
+                            <table width="280" align="center" class="qr-box">
+                                <tr>
+                                    <td align="center" style="padding: 15px 0 40px 0;" height="100%">
+                                        <h1 class="fs-38 xbold"
+                                            style="color: {{ colour }}; padding-bottom: 15px">{{ amount }}</h1>
+                                        <strong class="fs-12">{{ first }} {{ last }}</strong>
+                                        <p class="fs-12">{{ email }}</p>
+                                        <img alt="QR Code to redeem voucher" width="182px" height="182px"
+                                             style="display: block; height: 182px; width: 182px; padding-top: 20px"
+                                             border="0" src="{{ qr }}"/>
+                                        <strong class="fs-12">{{ humanId }}</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="40"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

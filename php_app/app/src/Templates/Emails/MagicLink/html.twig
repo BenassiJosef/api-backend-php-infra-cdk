@@ -1,0 +1,46 @@
+{% extends 'Emails/newBase.twig' %}
+{% block content %}
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns 2Rows">
+        <tr>
+            <td width="100%">
+                <table bgcolor="#FFFFFF" align="center" border="0" cellspacing="0" cellpadding="0"
+                       width="560">
+                                <tr>
+                                    <td height="15"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fs-32 xbold">
+                                        It's magic! Lets log you in.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="35"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fs-18 text-lighter">This will automatically log you into your account, click open link to continue
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td height="20"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a class="bx-button clear-link"
+                                           href="{{ link }}">Open Link</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td height="40"></td>
+                                </tr>
+                
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+{% endblock %}

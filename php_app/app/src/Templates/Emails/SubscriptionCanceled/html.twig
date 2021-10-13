@@ -1,0 +1,59 @@
+{% extends 'Emails/base.twig' %}
+{% block content %}
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns" >
+        <tr>
+            <td bgcolor="#F1F5F9" style="border-radius: 4px">
+                <table width="620" border="0" cellspacing="0" cellpadding="0" align="center" class="scale">
+                    <tr>
+                        <td bgcolor="#4c443e" data-bgcolor="Banner" style="background-color: rgb(255, 255, 255);">
+                            <table width="540" border="0" cellspacing="0" cellpadding="0" align="center" class="scale">
+                                <tr>
+                                    <td height="90">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                        <table width="540" border="0" cellspacing="0" cellpadding="0" align="center" style="font-family:'Avenir LT W01 35 Light', Helvetica, Arial, sans-serif; font-size: 16px; color: #c8bdb5;" class="scale">
+                                            <tr>
+                                                <td style="font-family: 'Avenir LT W01 85 Heavy', Helvetica, Arial, sans-serif; color: rgb(27, 27, 27); font-size: 24px;" class="scale-center-both-top" data-color="Headlines" data-size="Headlines" data-max="48">
+                                                    Subscription Cancelled
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td height="18">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="line-height: 27px; color: rgb(27, 27, 27);" class="scale-center-both" data-color="Paragraphs" data-size="Paragraphs" data-min="10" data-max="38">
+                                                    Hi {{ customer.first }}, <br><br>
+                                                    We are sorry to see you leave and hope you rejoin us soon!
+                                                    <br><br>
+                                                    Sincerely,<br>
+                                                    The Stampede Team
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td height="48">
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="90">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}

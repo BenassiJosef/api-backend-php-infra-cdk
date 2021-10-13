@@ -1,0 +1,147 @@
+{% extends 'Emails/newBase.twig' %}
+{% block content %}
+
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" data-module="2Columns 2Rows">
+        <tr>
+            <td width="100%">
+                <table bgcolor="#FFFFFF" align="center" border="0" cellspacing="0" cellpadding="0"
+                       width="560">
+                                <tr>
+                                    <td height="15"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fs-38 xbold black">
+                                        The {{ reportKind }} insight summary is ready
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="35">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-lighter fs-18">{{ startTime }}-{{ endTime }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td height="40"></td>
+                                </tr>
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/registrations">Registrations</a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">{{ registrations.registrations | number }}</td>
+                                </tr>
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/registrations">Verified</a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">{{ registrations.verified | number }}</td>
+                                </tr><!-- END VERIFIED ON -->
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/customer">
+                                            People
+                                        </a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">{{ customers.customers | number }}</td>
+                                </tr>
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/customer">
+                                            Returning People
+                                        </a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">{{ customers.return | number }}</td>
+                                </tr>
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/customer">
+                                            Time Spent (avg)
+                                        </a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">
+                                        {{ customers.averageTime | sec2Time }}
+                                    </td>
+                                </tr>
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/connections">
+                                            Total Visits
+                                        </a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">{{ connections.totalConnections | number }}</td>
+                                </tr>
+
+                                <tr height="40" style="border-bottom: 1px solid #ebebeb;">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/bandwidth">
+                                        Total Download
+                                        </a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="font-family: 'Montserrat', Helvetica, Arial, sans-serif; color: #00000; font-size: 13px;font-weight: 500;">{{ connections.totalDownload | bytes }}</td>
+                                </tr>
+
+                                <tr height="40">
+                                    <td class="text-grey fs-13">
+                                        <a class="clear-link blue-link"
+                                           href="{{ branding.domain }}{{ serial }}/bandwidth">
+                                            Total Upload
+                                        </a>
+                                    </td>
+
+                                    <td align="right"
+                                        style="color: #00000; font-size: 13px;font-weight: 500;">{{ connections.totalUpload | bytes }}</td>
+                                </tr>
+                                <tr>
+                                    <td height="20"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a class="bx-button clear-link"
+                                           href="{{ branding.domain }}{{ serial }}/overview">More Detail?</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td height="40"></td>
+                                </tr>
+            
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+
+{% endblock %}

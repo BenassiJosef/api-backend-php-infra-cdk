@@ -1,0 +1,20 @@
+{% extends 'Emails/marketingEmailBase.twig' %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+<body>
+{{ message | raw }}
+{% endblock %}
+
+{% block footer %}
+<table width="100%" class="footer" align="center" style="border-collapse: separate; border-spacing: 0; font-family: Helvetica, Arial, sans-serif; table-layout: fixed; width: 100%">
+    <tr>
+        <td class="footer-td" style="color: #999999; font-family: Helvetica, Arial, sans-serif; font-size: 11px; padding: 10px 0; text-align: left; width: 100%" align="left">
+            <p class="unsub">Don't want to get emails like this? <a href="{{ branding.domain }}opt_out?uid={{ uid }}&amp;serial={{ serial }}&amp;type=email">Unsubscribe from our emails</a></p>
+        </td>
+    </tr>
+</table>
+</body>
+{% endblock %}
