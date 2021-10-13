@@ -24,11 +24,11 @@ class AppStage extends cdk.Stage {
   }
 }
 
-const testBuild = new CodeBuildStep("Intergration Tests",{
+const testBuild = new CodeBuildStep("IntergrationTests",{
   input: CodePipelineSource.gitHub('BenassiJosef/api-backend-php-infra-cdk', 'main', {
     authentication: cdk.SecretValue.secretsManager('github-token'),
   }),
-  projectName: "Intergration Build",
+  projectName: "IntergrationBuild",
   commands:[
     'echo Tests would run here.....!!!!'
   ],
