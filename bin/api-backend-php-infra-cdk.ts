@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {EcsFargateService} from "../lib/ecs-fargate-service"
 import * as cdk from '@aws-cdk/core';
-import { CodePipeline, CodePipelineSource, ShellStep } from '@aws-cdk/pipelines';
+import { CodePipeline, CodePipelineSource, ShellStep, CodeBuildStep } from '@aws-cdk/pipelines';
 import * as pipelines from '@aws-cdk/pipelines';
 const app = new cdk.App();
 interface AppStageProps extends cdk.StackProps {
@@ -23,6 +23,17 @@ class AppStage extends cdk.Stage {
     }
   }
 }
+
+const testBuild = new CodeBuildStep("Intergration Tests",{
+  input: CodePipelineSource.gitHub('BenassiJosef/api-backend-php-infra-cdk', 'main', {
+    authentication: cdk.SecretValue.secretsManager('github-token'),
+  }),
+  projectName: "Intergration Build",
+  commands:[
+    'echo Tests would run here.....!!!!'
+  ],
+  primaryOutputDirectory:"/test-build"
+}).primaryOutput
 class CdkPipeline extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -31,13 +42,11 @@ class CdkPipeline extends cdk.Stack {
       // The pipeline name
       pipelineName: 'MyServicePipeline',
       crossAccountKeys:true,
-    
+      
        // How it will be built and synthesized
        synth: new ShellStep('Synth', {
          // Where the source can be found
-         input: CodePipelineSource.gitHub('BenassiJosef/api-backend-php-infra-cdk', 'main', {
-          authentication: cdk.SecretValue.secretsManager('github-token'),
-        }),
+         input: testBuild,
          
          // Install dependencies, build and run cdk synth
          commands: [
@@ -46,11 +55,6 @@ class CdkPipeline extends cdk.Stack {
            'npx cdk synth'
          ],
        }),
-       assetPublishingCodeBuildDefaults : new pipelines.CodeBuildStep("Run Tests",{
-         commands:[
-          'echo Tests would run here.....!!!!'
-         ],
-       })
     });
 
     const infraFargateStage = new AppStage(app,'Deploy-AppStage-Stage-Fargate',{
