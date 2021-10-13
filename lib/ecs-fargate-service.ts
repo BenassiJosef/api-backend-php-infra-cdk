@@ -29,7 +29,7 @@ export class EcsFargateService extends cdk.Stack {
       });
 
       const assest = new DockerImageAsset(this,'phpApp',{
-        directory: path.join(__dirname,"..","src")
+        directory: path.join(__dirname,"..","php_app")
       })
 
       asassetsecr.TarballImageAsset
