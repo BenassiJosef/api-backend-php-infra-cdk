@@ -1,7 +1,0 @@
-/.idea
-/vendor
-composer.phar
-.DS_Store
-Thumbs.db
-*.sublime-*
-/build

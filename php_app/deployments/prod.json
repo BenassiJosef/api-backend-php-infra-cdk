@@ -1,9 +1,0 @@
-{
-  "service": "backend",
-  "cluster": "prod",
-  "family": "backend",
-  "container": "backend-app",
-  "repository": "stampede/backend",
-  "region": "eu-west-1",
-  "account": "354378566817"
-}

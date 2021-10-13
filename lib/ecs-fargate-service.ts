@@ -32,8 +32,6 @@ export class EcsFargateService extends cdk.Stack {
         directory: path.join(__dirname,"..","php_app")
       })
 
-      asassetsecr.TarballImageAsset
-
       this.fargateInstance = new ApplicationLoadBalancedFargateService(this, 'Service', {
         cluster,
         taskImageOptions: {image: ecs.EcrImage.fromDockerImageAsset(assest) },

@@ -1,9 +1,0 @@
-{
-  "service": "stage-test",
-  "cluster": "stage",
-  "family": "backend-stage",
-  "container": "backend-app",
-  "repository": "stampede/backend",
-  "region": "eu-west-1",
-  "account": "354378566817"
-}
