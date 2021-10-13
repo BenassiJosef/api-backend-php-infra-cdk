@@ -33,7 +33,7 @@ const testBuild = new CodeBuildStep("IntergrationTests",{
     'echo Tests would run here.....!!!!'
   ],
   primaryOutputDirectory:""
-}).primaryOutput
+})
 class CdkPipeline extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -46,7 +46,7 @@ class CdkPipeline extends cdk.Stack {
        // How it will be built and synthesized
        synth: new ShellStep('Synth', {
          // Where the source can be found
-         input: testBuild,
+         input: testBuild.primaryOutput,
          
          // Install dependencies, build and run cdk synth
          commands: [
