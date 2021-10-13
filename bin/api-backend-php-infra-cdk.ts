@@ -32,7 +32,7 @@ const testBuild = new CodeBuildStep("IntergrationTests",{
   commands:[
     'echo Tests would run here.....!!!!'
   ],
-  primaryOutputDirectory:"/test-build"
+  primaryOutputDirectory:"/*"
 }).primaryOutput
 class CdkPipeline extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
