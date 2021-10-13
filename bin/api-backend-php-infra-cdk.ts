@@ -46,8 +46,7 @@ class CdkPipeline extends cdk.Stack {
        // How it will be built and synthesized
        synth: new ShellStep('Synth', {
          // Where the source can be found
-         input: testBuild.primaryOutput,
-         
+         input: testBuild,
          // Install dependencies, build and run cdk synth
          commands: [
            'npm ci',
