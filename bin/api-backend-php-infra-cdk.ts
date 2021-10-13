@@ -49,6 +49,7 @@ class CdkPipeline extends cdk.Stack {
          input: testBuild,
          // Install dependencies, build and run cdk synth
          commands: [
+           'ls',
            'npm ci',
            'npm run build',
            'npx cdk synth'
